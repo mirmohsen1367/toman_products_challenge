@@ -9,8 +9,8 @@
 
 1. Clone the repository:
     ```bash
-    git clone <repository-url>
-    cd <repository-name>
+    git clone https://github.com/mirmohsen1367/toman_products_challenge.git
+    cd toman_products_challenge
     ```
 
 2. Create a virtual environment:
@@ -33,7 +33,12 @@
     pip install -r requirements.txt
     ```
 
-5. Run the Django server:
+5. For create superuser:
+    ```bash
+    python manage.py createsuperuser
+    ```
+
+6. Run the Django server:
     ```bash
     python manage.py runserver
     ```
