@@ -1,12 +1,14 @@
-import uuid
 import os
+import uuid
 from django.db import models
 from django.utils.text import slugify
-from rest_framework.viewsets import GenericViewSet
+from django.core.validators import MaxValueValidator, MinValueValidator
+from decimal import Decimal
 
 class Product(models.Model):
     title = models.CharField(max_length=150, unique=True)
-    price = models.DecimalField(max_digits=10, decimal_places=0)
+    price = models.DecimalField(max_digits=10, decimal_places=0, validators=[MinValueValidator(Decimal("2000")),
+                                                                             MaxValueValidator(Decimal("9999999999"))])
     description = models.TextField()
 
     def __str__(self):
@@ -25,7 +27,7 @@ class ProductImage(models.Model):
         extension = os.path.splitext(filename)[-1].lower()
         filename_base = slugify(os.path.splitext(filename)[0])
         unique_filename = f"{uuid.uuid4().hex}_{filename_base}{extension}"
-        return os.path.join('product_images', unique_filename)
+        return os.path.join('product_images', str(instance.product_id), unique_filename)
 
     image = models.ImageField(upload_to=generate_upload_path)
     product = models.ForeignKey(to=Product, related_name="product_images", on_delete=models.CASCADE)
